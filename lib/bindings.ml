@@ -25,6 +25,9 @@ let read : store -> key -> string option Lwt.t =
 let store_history : ?depth:int -> store -> InMemory.History.t Lwt.t =
   fun ?depth store -> InMemory.history ?depth store
 
+let update_head : store -> Irmin.Hash.SHA1.t -> unit Lwt.t =
+  InMemory.update_head
+
 let walk_history :
   InMemory.History.t -> (string -> int64) -> unit Lwt.t =
   fun h f ->
@@ -113,6 +116,13 @@ struct
          Lwt_unix.run @@
          repository_master @@
          Repository_root.get p)
+
+  let () = I.internal "irmin_store_update_head"
+      (ptr store @-> string @-> returning void)
+      (fun p s ->
+         Lwt_unix.run @@
+         update_head (Store_root.get p)
+           (Irmin.Hash.SHA1.of_hum s))
 
   (** Stores *)
   let () = I.internal "irmin_store_destroy"

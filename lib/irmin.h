@@ -38,6 +38,8 @@ void irmin_store_append(irmin_store_t *,
 char *irmin_store_read(irmin_store_t *,
 		       char */* key */);
 
+void irmin_store_update_head(irmin_store_t *, char *);
+
 irmin_history_t *irmin_store_history(irmin_store_t *);
 
 /*

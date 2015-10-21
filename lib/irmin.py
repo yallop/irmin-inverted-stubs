@@ -40,6 +40,12 @@ class Store(object):
             raise KeyError, k
         else: return v
 
+    def undo(self):
+        history = list(self.history())
+        if len(history) > 1:
+            print 'setting history to %s' % (history[1],)
+            libirmin.irmin_store_update_head(self._p, history[1])
+
     def history(self):
         return History(libirmin.irmin_store_history(self._p))
 
