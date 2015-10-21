@@ -6,6 +6,7 @@ builddir = os.path.realpath(os.path.join(
     '_build'))
 
 libirmin = ctypes.CDLL(os.path.join(builddir, 'libirmin.so'))
+libirmin.irmin_store_read.restype = ctypes.c_char_p
 
 class Repository(object):
 
@@ -27,7 +28,17 @@ class Store(object):
         self._p = ptr
 
     def __setitem__(self, k, v):
+        if not isinstance(k, str) or not isinstance(v, str):
+            raise TypeError
         libirmin.irmin_store_append(self._p, k, v)
+
+    def __getitem__(self, k):
+        if not isinstance(k, str):
+            raise TypeError
+        v = libirmin.irmin_store_read(self._p, k)
+        if v in (0, None):
+            raise KeyError, k
+        else: return v
 
     def history(self):
         return History(libirmin.irmin_store_history(self._p))

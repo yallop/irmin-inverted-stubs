@@ -35,6 +35,9 @@ void irmin_store_append(irmin_store_t *,
 			char */* key */,
 			char */* value */);
 
+char *irmin_store_read(irmin_store_t *,
+		       char */* key */);
+
 irmin_history_t *irmin_store_history(irmin_store_t *);
 
 /*

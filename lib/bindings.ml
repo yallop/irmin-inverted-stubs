@@ -19,6 +19,9 @@ let repository_master : InMemory.Repo.t -> store Lwt.t =
 let update : store -> key -> string -> unit Lwt.t =
   InMemory.update
 
+let read : store -> key -> string option Lwt.t =
+  InMemory.read
+
 let store_history : ?depth:int -> store -> InMemory.History.t Lwt.t =
   fun ?depth store -> InMemory.history ?depth store
 
@@ -121,6 +124,12 @@ struct
       (fun p k v ->
          Lwt_unix.run @@
          update (Store_root.get p) [k] v)
+
+  let () = I.internal "irmin_store_read"
+      (ptr store @-> string @-> returning string_opt)
+      (fun p k ->
+         Lwt_unix.run @@
+         read (Store_root.get p) [k])
 
   let () = I.internal "irmin_store_history"
       (ptr store @-> returning (ptr history))
