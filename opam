@@ -1,0 +1,16 @@
+opam-version: "1.2"
+name: "irmin-inverted-stubs"
+version: "dev"
+maintainer: "yallop@gmail.com"
+author: "yallop@gmail.com"
+homepage: "https://github.com/yallop/irmin-inverted-stubs"
+dev-repo: "https://github.com/yallop/irmin-inverted-stubs.git"
+bug-reports: "https://github.com/yallop/irmin-inverted-stubs/issues"
+build: [[make]]
+depends: [
+   "irmin"
+   "ctypes" {>= "0.4.0"}
+   "ctypes-foreign"
+   "lwt"
+]
+available: [ ocaml-version >= "4.02.0" ]
